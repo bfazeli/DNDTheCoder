@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 public class DragAndDropActivity extends Activity {
@@ -25,7 +26,31 @@ public class DragAndDropActivity extends Activity {
         setContentView(R.layout.activity_drag_and_drop);
         context = this;
 
+        dragLayout = (GridLayout) findViewById(R.id.activity_drag_and_drop);
+
         //TODO:  Add the CoderDragListener to every LinearLayout in activity_drag_and_drop
+        // Loop through all 25 LinearLayouts which are children of the GridLayout
+        int llchildCount = dragLayout.getChildCount();
+        for (int i = 0; i < llchildCount; ++i)
+        {
+            View childView = dragLayout.getChildAt(i);
+            if (childView instanceof LinearLayout)
+            {
+                LinearLayout childLinearLayout = (LinearLayout) childView;
+                childLinearLayout.setOnDragListener(new CoderDragListener());
+                int ivChildCount = childLinearLayout.getChildCount();
+                for (int j = 0; j < ivChildCount; ++j)
+                {
+                    View grandChildView = childLinearLayout.getChildAt(j);
+                    if (grandChildView instanceof ImageView)
+                    {
+                        ImageView childImageView = (ImageView) grandChildView;
+                        childImageView.setOnTouchListener(new CoderTouchListener());
+                    }
+                }
+
+            }
+        }
 
         //TODO:  Add the CoderTouchListener to every ImageView within each LinearLayout
 
